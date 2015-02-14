@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cpe4235.chapter4;
+package com.cpe4235.chapter4.data;
 
 import java.util.Date;
 import java.util.Objects;

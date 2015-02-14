@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-import com.cpe4235.chapter4.IP;
-import com.cpe4235.chapter4.YesNo;
-import static com.sun.javafx.Utils.sum;
+import com.cpe4235.chapter4.data.IP;
+import com.cpe4235.chapter4.data.OP;
+import com.cpe4235.chapter4.data.Patient;
+import com.cpe4235.chapter4.data.YesNo;
 import java.lang.reflect.Method;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -17,9 +18,24 @@ import org.junit.Test;
  */
 public class SumAvgReflectionPatientT {
 
-    private int sum;
+    private float average(Patient patient) throws Exception {
+        return (float) sum((IP) patient) / (float) count(patient);
+    }
+
+    private int count(Patient ip) throws Exception {
+        Method[] methods = ip.getClass().getMethods();
+        int count = 0;
+        for (Method method : methods) {
+            if (method.getName().startsWith("getRole")) {
+                YesNo yn = (YesNo) method.invoke(ip);
+                count = count + 1;
+            }
+        }
+        return count;
+    }
 
     public int sum(IP ip) throws Exception {
+        int sum = 0;
         Method[] methods = ip.getClass().getMethods();
         for (Method method : methods) {
             if (method.getName().startsWith("getRole")) {
@@ -30,8 +46,24 @@ public class SumAvgReflectionPatientT {
         return sum;
     }
 
+    public int sum(OP op) throws Exception {
+        int sum = 0;
+        Method[] methods = op.getClass().getMethods();
+        for (Method method : methods) {
+            if (method.getName().startsWith("getRole")) {
+                YesNo yn = (YesNo) method.invoke(op);
+                sum = sum + yn.getScore();
+            }
+        }
+        return sum;
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
     @Test
-    public void testSum() throws Exception {
+    public void testSumIP1() throws Exception {
         IP ip = new IP();
         ip.setRole1(YesNo.YES);
         ip.setRole2(YesNo.YES);
@@ -40,6 +72,60 @@ public class SumAvgReflectionPatientT {
         ip.setRole5(YesNo.YES);
 
         assertEquals(3, sum(ip));
+        assertEquals(0.6, average(ip), 0.05);
 
     }
+
+    @Test
+    public void testSumIP2() throws Exception {
+        IP ip = new IP();
+        ip.setRole1(YesNo.YES);
+        ip.setRole2(YesNo.YES);
+        ip.setRole3(YesNo.YES);
+        ip.setRole4(YesNo.YES);
+        ip.setRole5(YesNo.YES);
+
+        assertEquals(5, sum(ip));
+        assertEquals(1, average(ip), 0);
+    }
+
+    @Test
+    public void testSumIP3() throws Exception {
+        IP ip = new IP();
+        ip.setRole1(YesNo.YES);
+        ip.setRole2(YesNo.YES);
+        ip.setRole3(YesNo.NO);
+        ip.setRole4(YesNo.YES);
+        ip.setRole5(YesNo.NO);
+
+        assertEquals(3, sum(ip));
+        assertEquals(0.6, average(ip), 0.05);
+    }
+
+    @Test
+    public void testSumIP4() throws Exception {
+        IP ip = new IP();
+        ip.setRole1(YesNo.YES);
+        ip.setRole2(YesNo.NO);
+        ip.setRole3(YesNo.YES);
+        ip.setRole4(YesNo.YES);
+        ip.setRole5(YesNo.NO);
+
+        assertEquals(3, sum(ip));
+        assertEquals(0.6, average(ip), 0.05);
+    }
+
+    @Test
+    public void testSumIP5() throws Exception {
+        IP ip = new IP();
+        ip.setRole1(YesNo.NO);
+        ip.setRole2(YesNo.YES);
+        ip.setRole3(YesNo.NO);
+        ip.setRole4(YesNo.NO);
+        ip.setRole5(YesNo.YES);
+
+        assertEquals(2, sum(ip));
+        assertEquals(0.4, average(ip), 0.05);
+    }
+
 }

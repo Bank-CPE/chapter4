@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 
-import com.cpe4235.chapter4.IP;
-import com.cpe4235.chapter4.YesNo;
+import com.cpe4235.chapter4.data.IP;
+import com.cpe4235.chapter4.data.YesNo;
 import junit.framework.TestCase;
 
 /**
