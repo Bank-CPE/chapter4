@@ -6,7 +6,6 @@
 
 import com.cpe4235.chapter4.IP;
 import com.cpe4235.chapter4.YesNo;
-import junit.framework.Test;
 import junit.framework.TestCase;
 
 /**
